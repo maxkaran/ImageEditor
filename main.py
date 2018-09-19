@@ -76,6 +76,17 @@ def applyBrightnessAndContrast( brightness, contrast ):
 
   # YOUR CODE HERE
 
+  for i in range(width):
+    for j in range(height):
+      #read from source image
+      y, cb, cr = srcPixels[i,j]
+      #update Y value
+      y = (y*contrast + brightness)
+      #put pixels back into dest image
+      dstPixels[i,j] = y, cb, cr
+
+  # END OF MY CODE
+
   print 'adjust brightness = %f, contrast = %f' % (brightness,contrast)
 
   
