@@ -119,6 +119,17 @@ def scaleImage( factor ):
 
   # YOUR CODE HERE
 
+  T = [[factor, 0],[0, factor]] #Matrix that is used to perform scaling
+
+  for i in range(width):
+    for j in range(height):
+       newX, newY = numpy.matmul(T, [i,j]) #calulate this pixels new X and Y coordinates
+       if newX > 0 and newY > 0 and newX < width and newY < height:
+        dstPixels[newX, newY] = srcPixels[i,j] #place rgb/ycbcr value in that new pixel
+
+
+  # MY CODE ENDS HERE
+
   print 'scale image by %f' % factor
 
   
