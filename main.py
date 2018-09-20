@@ -74,8 +74,6 @@ def applyBrightnessAndContrast( brightness, contrast ):
   srcPixels = tempImage.load()
   dstPixels = currentImage.load()
 
-  # YOUR CODE HERE
-
   for i in range(width):
     for j in range(height):
       #read from source image
@@ -84,8 +82,6 @@ def applyBrightnessAndContrast( brightness, contrast ):
       y = (y*contrast + brightness)
       #put pixels back into dest image
       dstPixels[i,j] = y, cb, cr
-
-  # END OF MY CODE
 
   print 'adjust brightness = %f, contrast = %f' % (brightness,contrast)
 
@@ -117,18 +113,19 @@ def scaleImage( factor ):
   srcPixels = tempImage.load()
   dstPixels = currentImage.load()
 
-  # YOUR CODE HERE
+  # Now with back projection
 
   T = [[factor, 0],[0, factor]] #Matrix that is used to perform scaling
+  T = numpy.linalg.inv(T) #Inverse is need for the division in back projection
 
   for i in range(width):
     for j in range(height):
-       newX, newY = numpy.matmul(T, [i,j]) #calulate this pixels new X and Y coordinates
-       if newX > 0 and newY > 0 and newX < width and newY < height:
-        dstPixels[newX, newY] = srcPixels[i,j] #place rgb/ycbcr value in that new pixel
+      newX, newY = numpy.matmul([i,j], T) #calulate this pixels new X and Y coordinates with inverse transform matrix
+        
+      dstPixels[i, j] = 0,0,0 #make all other pixels uniform colour so it's not picture (THIS IS GREEN RN, NEEDS TO BE WHITE)
 
-
-  # MY CODE ENDS HERE
+      if newX > 0 and newY > 0 and newX < width and newY < height:
+        dstPixels[i, j] = srcPixels[newX, newY] #place rgb/ycbcr value in that new pixel
 
   print 'scale image by %f' % factor
 
