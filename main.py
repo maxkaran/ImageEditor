@@ -127,11 +127,12 @@ def scaleImage( factor ):
       newX += width/2
       newY += height/2
 
-      dstPixels[i, j] = 0,0,0 #make all other pixels uniform colour so it's not picture (THIS IS GREEN RN, NEEDS TO BE WHITE)
+      dstPixels[i, j] = 255,128,128  #make all other pixels uniform colour so it's not picture, white background
 
       if newX > 0 and newY > 0 and newX < width and newY < height:
         dstPixels[i, j] = srcPixels[newX, newY] #place rgb/ycbcr value in that new pixel
 
+  print dstPixels[300,300]
   print 'scale image by %f' % factor
 
   
