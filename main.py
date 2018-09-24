@@ -120,8 +120,13 @@ def scaleImage( factor ):
 
   for i in range(width):
     for j in range(height):
-      newX, newY = numpy.matmul([i,j], T) #calulate this pixels new X and Y coordinates with inverse transform matrix
-        
+      #Below half the width and half the height are subtracted to keep the image centered, they are later readded in the next two lines of code
+      newX, newY = numpy.matmul([i-width/2,j-height/2], T) #calulate this pixels new X and Y coordinates with inverse transform matrix
+      
+      #Now center the image
+      newX += width/2
+      newY += height/2
+
       dstPixels[i, j] = 0,0,0 #make all other pixels uniform colour so it's not picture (THIS IS GREEN RN, NEEDS TO BE WHITE)
 
       if newX > 0 and newY > 0 and newX < width and newY < height:
