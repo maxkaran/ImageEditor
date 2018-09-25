@@ -95,8 +95,24 @@ def performHistoEqualization( radius ):
   width  = currentImage.size[0]
   height = currentImage.size[1]
 
-  # YOUR CODE HERE
+  histo = []
 
+  # YOUR CODE HERE
+  if radius > width/2 or radius > height/2:
+    #floor the radius if it exceeds the image dimensions
+    radius = min(width/2, height/2)
+    print 'Radius exceeds dimensions of image, radius changed to %d' % radius
+
+  histo = [0 for i in range(256)]
+  for i in range(-radius, radius+1):
+    for j in range(-radius, radius+1):
+      x = width/2 + i
+      y = height/2 + j
+
+      pixelIntesity = pixels[x,y][0]
+      histo[pixelIntesity] = histo[pixelIntesity] + 1
+
+  print histo
   print 'perform local histogram equalization with radius %d' % radius
 
 
