@@ -95,7 +95,6 @@ def performHistoEqualization( radius ):
   width  = currentImage.size[0]
   height = currentImage.size[1]
 
-  histo = []
 
   # YOUR CODE HERE
   if radius > width/2 or radius > height/2:
@@ -103,16 +102,38 @@ def performHistoEqualization( radius ):
     radius = min(width/2, height/2)
     print 'Radius exceeds dimensions of image, radius changed to %d' % radius
 
-  histo = [0 for i in range(256)]
+  numberOfPixels = (2*radius+1)*(2*radius+1)
+
+  histo = [0.0 for i in range(256)]
+  cumProb = [0.0 for i in range(256)] #will store cumulative probability of pixel intensities
+  cumSum = 0.0
+  
   for i in range(-radius, radius+1):
     for j in range(-radius, radius+1):
       x = width/2 + i
       y = height/2 + j
 
+      #get intensity of each pixel and keep track of how many of each intensity there are
       pixelIntesity = pixels[x,y][0]
-      histo[pixelIntesity] = histo[pixelIntesity] + 1
+      histo[pixelIntesity] = histo[pixelIntesity] + 1 
 
-  print histo
+  #now populate cumProb
+  for i in range(256):
+    cumSum = cumSum + histo[i]/numberOfPixels #add to cumulative sum of probablitiles
+    cumProb[i] = cumSum
+
+  #now take the the cumulative probability and multiply it by 256 to get full range of intesities
+  for i in range(256):
+    cumProb[i] = cumProb[i] * 256 #takes cumulative probability and multiplies it by the full range of intensities
+    #the old intensities will map to these values
+  
+
+  for i in range(-radius, radius+1):
+    for j in range(-radius, radius+1):
+      x = width/2 + i
+      y = height/2 + j
+      pixels[x,y] = cumProb[int(pixels[x,y][0])], int(pixels[x,y][1]), int(pixels[x,y][2]) #assign new intensity, as well as original CbCr values (this is necessary because tuples are immutable) 
+    
   print 'perform local histogram equalization with radius %d' % radius
 
 
