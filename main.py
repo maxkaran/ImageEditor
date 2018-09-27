@@ -12,6 +12,8 @@
 # colourspace, and that you should manipulate only the Y component of
 # each pixel when doing intensity changes.
 
+#Max Karan - 14mk64 - 10170057
+#Primrose Chareka - 14pc13
 
 import sys, os, numpy, math
 
@@ -90,16 +92,15 @@ def applyBrightnessAndContrast( brightness, contrast ):
 # Perform local histogram equalization on the current image using the given radius.
 
 def performHistoEqualization( radius ):
-
   pixels = currentImage.load()
   width  = currentImage.size[0]
   height = currentImage.size[1]
 
 
   # YOUR CODE HERE
-  if radius > width/2 or radius > height/2:
+  if radius >= width/2-1 or radius >= height/2-1:
     #floor the radius if it exceeds the image dimensions
-    radius = min(width/2, height/2)
+    radius = min(width/2-1, height/2-1)
     print 'Radius exceeds dimensions of image, radius changed to %d' % radius
 
   numberOfPixels = (2*radius+1)*(2*radius+1)
